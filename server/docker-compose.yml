@@ -1,0 +1,35 @@
+version: '3.8'
+
+services: 
+  db:
+    image: mysql:latest
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_DATABASE=$APPSETTING_DB_DATABASE
+      - MYSQL_ROOT_HOST="%""
+    ports:
+      - $APPSETTING_DB_PORT:$APPSETTING_DB_DOCKER_PORT
+    command:
+      --init-file /db/init.sql
+    volumes:
+      - ./db:/var/lib/db
+      - ./db/init.sql:/db/init.sql
+  app:
+    depends_on:
+      - db
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - APPSETTING_DB_HOST=db
+    ports:
+      - "127.0.0.1:$APPSETTING_DOCKER_PORT:$APPSETTING_PORT"
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:

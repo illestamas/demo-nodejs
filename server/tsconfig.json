@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "outDir": "./build",
+    "baseUrl": "./src",
+    "paths": {
+      "@db/*": ["db/*"],
+      "@app/*": ["app/*"],
+      "@api/*": ["api/*"],
+      "@utils/*": ["utils/*"],
+      "@ts/*": ["types/*"]
+    }
+  }
+}
